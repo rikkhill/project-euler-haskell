@@ -1,3 +1,4 @@
 # compile and run Project Euler problems
-ghc problems/euler_$1.hs -o /tmp/chunder -odir /tmp -hidir /tmp
-time /tmp/chunder
+mkdir -p /tmp/$1
+ghc --make -v problems/euler_$1.hs -o /tmp/$1/chunder -odir /tmp/$1 -hidir /tmp/$1
+time /tmp/$1/chunder
