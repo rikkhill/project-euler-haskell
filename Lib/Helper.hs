@@ -9,9 +9,7 @@ factors :: Int -> [Int]
 factors n = [x | x <-[1..n], mod n x == 0 ]
 
 -- Primacy of an integer
--- TODO make this faster when I can figure out how to
--- get `[1..ceil sqrt n]` to not barf
 is_prime :: Int -> Bool
-is_prime n = if length (factors n) == 0
+is_prime n = if (elem n [2,3,5,7]) || mod n 2 == 0 || length [x | x <-[3,5..ceiling(sqrt(fromIntegral n))], mod n x == 0 ] == 0
                 then True
                 else False
