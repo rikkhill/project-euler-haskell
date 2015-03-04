@@ -1,15 +1,22 @@
 -- Helper functions
--- (I don't know where this is supposed to go in my directory structure!)
-
 module Lib.Helper where
 
--- All factors of an integer
--- (I don't know if this is the most efficient way of doing this)
+import Data.List
+
+-- All factors of an integer, sorted
+smallfactors :: Int -> [Int]
+smallfactors n = [ x | x <-[2..ceiling(sqrt(fromIntegral n))], mod n x == 0 ]
+
+bigfactors :: Int -> [Int] -> [Int]
+bigfactors n sf = sort (map (\x -> (floor ((fromIntegral n) / (fromIntegral x)))) sf)
+
 factors :: Int -> [Int]
-factors n = [x | x <-[1..n], mod n x == 0 ]
+factors n = union (smallfactors n) (bigfactors n (smallfactors n))
 
 -- Primacy of an integer
+-- Hacky short-circuiting looks ugly but should be faster
 is_prime :: Int -> Bool
-is_prime n = if (elem n [2,3,5,7]) || mod n 2 == 0 || length [x | x <-[3,5..ceiling(sqrt(fromIntegral n))], mod n x == 0 ] == 0
-                then True
-                else False
+is_prime n = if (n /= 2 && mod n 2 == 0)
+                || (length [x | x <-[3,5..(max (ceiling(sqrt(fromIntegral n))) 6)], mod n x == 0 ]) /= 0
+                then False
+                else True
